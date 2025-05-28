@@ -7,15 +7,17 @@ pipeline {
     }
 
     stages {
+        // Build Stage: Compile Code & Create Artifacts
         stage('Build') {
             steps {
                 script {
                     echo 'Building the application...'
-                    bat 'mvn clean package'
+                    bat 'mvn clean package' // Generates JAR
                 }
             }
         }
         
+        // Test Stage: Run Automated Tests
         stage('Test') {
             steps {
                 script {
@@ -25,6 +27,7 @@ pipeline {
             }
         }
 
+        // Code Quality Stage: Analyze Code Using SonarQube
         stage('Code Quality') {
             steps {
                 script {
@@ -34,15 +37,17 @@ pipeline {
             }
         }
 
+        // Security Scan Stage: Scan Code & Dependencies for Vulnerabilities
         stage('Security Scan') {
             steps {
                 script {
                     echo 'Performing security scan...'
-                    bat 'trivy image %DOCKER_IMAGE%'
+                    bat 'trivy image %DOCKER_IMAGE%' // Docker image security scan
                 }
             }
         }
 
+        // Build Docker Image: Package Microservices
         stage('Build Docker Image') {
             steps {
                 script {
@@ -52,6 +57,7 @@ pipeline {
             }
         }
 
+        // Push Docker Image to Registry
         stage('Push to Registry') {
             steps {
                 script {
@@ -62,15 +68,17 @@ pipeline {
             }
         }
 
+        // Deploy Application to Local or Cloud Environment
         stage('Deploy') {
             steps {
                 script {
                     echo 'Deploying application...'
-                    bat 'docker-compose up -d'
+                    bat 'docker-compose up -d' // Starts services
                 }
             }
         }
 
+        // Release to Production (Kubernetes Deployment)
         stage('Release to Production') {
             steps {
                 script {
@@ -80,11 +88,12 @@ pipeline {
             }
         }
 
+        // Monitoring Stage: Set Up Performance & Logging Tools
         stage('Monitoring') {
             steps {
                 script {
                     echo 'Setting up monitoring tools...'
-                    bat 'prometheus & grafana running'
+                    bat 'prometheus & grafana running' // Start monitoring stack
                 }
             }
         }
