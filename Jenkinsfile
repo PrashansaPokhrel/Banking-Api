@@ -28,14 +28,14 @@ pipeline {
         }
 
         // Code Quality Stage: Analyze Code Using SonarQube
-        stage('Code Quality Analysis') {
-            steps {
-                script {
-                    echo 'Running SonarQube analysis...'
-                    bat 'sonar-scanner -Dsonar.projectKey=banking-api -Dsonar.sources=src'
-                }
-            }
+     stage('Code Quality Analysis') {
+    steps {
+        script {
+            echo 'Running SonarQube code quality check...'
+            bat 'sonar-scanner -Dsonar.projectKey=banking-api -Dsonar.sources=src -Dsonar.exclusions=**/test/**'
         }
+    }
+}
 
         // Security Scan Stage: Scan Code & Dependencies for Vulnerabilities
         stage('Security Scan') {
