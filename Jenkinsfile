@@ -17,7 +17,12 @@ pipeline {
                     bat 'mvn test'
             }
         }
-        stage('Code Quality Analysis') { steps { echo 'Checking code quality...' } }
+       stage('Code Quality Analysis') {
+            steps {
+                    echo 'Checking code quality...'
+                    bat 'sonar-scanner -Dsonar.projectKey=BankingAPI -Dsonar.sources=src/main/java/ -Dsonar.host.url=http://localhost:9000 -Dsonar.login=your-token'
+            }
+        }
         stage('Security Scan') { steps { echo 'Performing security scan...' } }
         stage('Build Docker Image') { steps { echo 'Creating Docker image...' } }
         stage('Push to Registry') { steps { echo 'Pushing Docker image to registry...' } }
