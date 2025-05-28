@@ -2,32 +2,15 @@ pipeline {
     agent any
 
     stages {
-        // Build Stage
-        stage('Build') { steps { /* Build the application */ } }
-        
-        // Test Stage
-        stage('Test') { steps { /* Run automated tests */ } }
-        
-        // Code Quality Analysis
-        stage('Code Quality Analysis') { steps { /* Analyze code quality */ } }
-        
-        // Security Scan
-        stage('Security Scan') { steps { /* Scan code for vulnerabilities */ } }
-        
-        // Build Docker Image
-        stage('Build Docker Image') { steps { /* Package microservices into a Docker image */ } }
-        
-        // Push Docker Image to Registry
-        stage('Push to Registry') { steps { /* Push Docker image to registry */ } }
-        
-        // Deploy to Staging
-        stage('Deploy to Staging') { steps { /* Deploy application to a test environment */ } }
-        
-        // Release to Production
-        stage('Release to Production') { steps { /* Promote application to production */ } }
-        
-        // Monitoring & Alerting
-        stage('Monitoring & Alerting') { steps { /* Set up monitoring tools */ } }
+        stage('Build') { steps { echo 'Building the application...' } }
+        stage('Test') { steps { echo 'Running tests...' } }
+        stage('Code Quality Analysis') { steps { echo 'Checking code quality...' } }
+        stage('Security Scan') { steps { echo 'Performing security scan...' } }
+        stage('Build Docker Image') { steps { echo 'Creating Docker image...' } }
+        stage('Push to Registry') { steps { echo 'Pushing Docker image to registry...' } }
+        stage('Deploy to Staging') { steps { echo 'Deploying to staging...' } }
+        stage('Release to Production') { steps { echo 'Releasing to production...' } }
+        stage('Monitoring & Alerting') { steps { echo 'Setting up monitoring...' } }
     }
 
     post {
