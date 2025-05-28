@@ -17,10 +17,10 @@ pipeline {
                     bat 'mvn test'
             }
         }
-       stage('Code Quality Analysis') {
+      stage('Code Quality Analysis') {
             steps {
-                    echo 'Checking code quality...'
-                    bat 'sonar-scanner -Dsonar.projectKey=BankingAPI -Dsonar.sources=src/main/java/ -Dsonar.host.url=http://localhost:9000 -Dsonar.login=your-token'
+                    echo 'Running SonarQube analysis...'
+                    bat '"C:\\Program Files\\sonar-scanner\\bin\\sonar-scanner" -Dsonar.projectKey=BankingAPI -Dsonar.sources=src/main/java/ -Dsonar.host.url=http://localhost:9000 -Dsonar.login=your-token'
             }
         }
         stage('Security Scan') { steps { echo 'Performing security scan...' } }
