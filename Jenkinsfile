@@ -2,15 +2,22 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') { steps { echo 'Building the application...' } }
-        stage('Test') { steps { echo 'Running tests...' } }
-        stage('Code Quality Analysis') { steps { echo 'Checking code quality...' } }
-        stage('Security Scan') { steps { echo 'Performing security scan...' } }
-        stage('Build Docker Image') { steps { echo 'Creating Docker image...' } }
-        stage('Push to Registry') { steps { echo 'Pushing Docker image to registry...' } }
-        stage('Deploy to Staging') { steps { echo 'Deploying to staging...' } }
-        stage('Release to Production') { steps { echo 'Releasing to production...' } }
-        stage('Monitoring & Alerting') { steps { echo 'Setting up monitoring...' } }
+        stage('Build') {
+            steps {
+                script {
+                    echo 'Building Banking API JAR using Maven...'
+                    bat 'mvn clean package'
+                }
+            }
+        }
+        stage('Test') { steps { /* Run automated tests */ } }
+        stage('Code Quality Analysis') { steps { /* Analyze code quality */ } }
+        stage('Security Scan') { steps { /* Scan for vulnerabilities */ } }
+        stage('Build Docker Image') { steps { /* Package into a Docker image */ } }
+        stage('Push to Registry') { steps { /* Upload Docker image to registry */ } }
+        stage('Deploy to Staging') { steps { /* Deploy to staging environment */ } }
+        stage('Release to Production') { steps { /* Promote to production */ } }
+        stage('Monitoring & Alerting') { steps { /* Set up monitoring */ } }
     }
 
     post {
