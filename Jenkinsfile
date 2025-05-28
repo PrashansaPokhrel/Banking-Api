@@ -38,14 +38,19 @@ pipeline {
 }
 
         // Security Scan Stage: Scan Code & Dependencies for Vulnerabilities
-        stage('Security Scan') {
-            steps {
-                script {
-                    echo 'Performing security scan...'
-                    bat 'trivy image %DOCKER_IMAGE%' // Scans the Docker image
-                }
-            }
+    stage('Security Scan') {
+    steps {
+        script {
+            echo 'Performing security scan...'
+
+            // Scan Docker image with Trivy
+            bat 'trivy image banking-api:latest > trivy_report.txt'
+
+            // Scan dependencies with Snyk
+            bat 'snyk test > snyk_report.txt'
         }
+    }
+}
 
         // Build Docker Image: Package Microservices
         stage('Build Docker Image') {
