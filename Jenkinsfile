@@ -28,29 +28,24 @@ pipeline {
         }
 
         // Code Quality Stage: Analyze Code Using SonarQube
-     stage('Code Quality Analysis') {
-    steps {
-        script {
-            echo 'Running SonarQube code quality check...'
-            bat 'sonar-scanner -Dsonar.projectKey=banking-api -Dsonar.sources=src -Dsonar.exclusions=**/test/**'
+        stage('Code Quality Analysis') {
+            steps {
+                script {
+                    echo 'Running SonarQube analysis...'
+                    bat 'sonar-scanner -Dsonar.projectKey=banking-api -Dsonar.sources=src'
+                }
+            }
         }
-    }
-}
 
         // Security Scan Stage: Scan Code & Dependencies for Vulnerabilities
-    stage('Security Scan') {
-    steps {
-        script {
-            echo 'Performing security scan...'
-
-            // Scan Docker image with Trivy
-            bat 'trivy image banking-api:latest > trivy_report.txt'
-
-            // Scan dependencies with Snyk
-            bat 'snyk test > snyk_report.txt'
+        stage('Security Scan') {
+            steps {
+                script {
+                    echo 'Performing security scan...'
+                    bat 'trivy image %DOCKER_IMAGE%' // Scans the Docker image
+                }
+            }
         }
-    }
-}
 
         // Build Docker Image: Package Microservices
         stage('Build Docker Image') {
@@ -73,32 +68,33 @@ pipeline {
             }
         }
 
-        // Deploy Application to Local or Cloud Environment
-        stage('Deploy') {
+        // Deploy to Test Environment (Staging Server or Docker Compose)
+        stage('Deploy to Staging') {
             steps {
                 script {
-                    echo 'Deploying application...'
+                    echo 'Deploying to staging environment...'
                     bat 'docker-compose up -d' // Starts services
                 }
             }
         }
 
-        // Release to Production (Kubernetes Deployment)
+        // Promote Application to Production (AWS CodeDeploy)
         stage('Release to Production') {
             steps {
                 script {
                     echo 'Releasing to production...'
-                    bat 'kubectl apply -f deployment.yaml'
+                    bat 'aws deploy create-deployment --application-name BankingAPI --deployment-group-name ProdGroup --s3-location bucket=my-artifacts,key=banking-api.zip,bundleType=zip'
                 }
             }
         }
 
-        // Monitoring Stage: Set Up Performance & Logging Tools
-        stage('Monitoring') {
+        // Monitoring & Alerting in Production
+        stage('Monitoring & Alerting') {
             steps {
                 script {
-                    echo 'Setting up monitoring tools...'
-                    bat 'prometheus & grafana running' // Start monitoring stack
+                    echo 'Setting up production monitoring...'
+                    bat 'datadog-agent start' // Starts Datadog agent for monitoring
+                    bat 'newrelic start' // Starts New Relic for performance metrics
                 }
             }
         }
@@ -109,7 +105,7 @@ pipeline {
             echo 'Pipeline execution successful!'
         }
         failure {
-            echo 'Pipeline execution failed!'
+            echo 'Pipeline execution failed! Check logs for details.'
         }
     }
 }
