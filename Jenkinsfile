@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building the application...'
-                    bat 'mvn clean package' // Generates JAR
+                    bat 'mvn clean package' // Generates JAR file
                 }
             }
         }
@@ -22,17 +22,17 @@ pipeline {
             steps {
                 script {
                     echo 'Running unit and integration tests...'
-                    bat 'mvn test'
+                    bat 'mvn test' // Java JUnit tests
                 }
             }
         }
 
         // Code Quality Stage: Analyze Code Using SonarQube
-        stage('Code Quality') {
+        stage('Code Quality Analysis') {
             steps {
                 script {
-                    echo 'Analyzing code quality...'
-                    bat 'sonar-scanner'
+                    echo 'Running SonarQube analysis...'
+                    bat 'sonar-scanner -Dsonar.projectKey=banking-api -Dsonar.sources=src'
                 }
             }
         }
@@ -42,7 +42,7 @@ pipeline {
             steps {
                 script {
                     echo 'Performing security scan...'
-                    bat 'trivy image %DOCKER_IMAGE%' // Docker image security scan
+                    bat 'trivy image %DOCKER_IMAGE%' // Scans the Docker image
                 }
             }
         }
