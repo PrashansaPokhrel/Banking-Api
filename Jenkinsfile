@@ -11,7 +11,12 @@ pipeline {
             }
         }
 
-        stage('Test') { steps { echo 'Running automated tests...' } }
+        stage('Test') {
+    steps {
+        echo 'Running automated tests...'
+        bat 'mvn test'
+    }
+}
         stage('Code Quality Analysis') { steps { echo 'Checking code quality...' } }
         stage('Security Scan') { steps { echo 'Performing security scan...' } }
         stage('Build Docker Image') { steps { echo 'Creating Docker image...' } }
