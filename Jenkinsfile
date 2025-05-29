@@ -21,8 +21,8 @@ pipeline {
             steps {
                     echo 'Running SonarQube analysis...'
                     withSonarQubeEnv('SonarQube') {  
-                    bat '"C:\\Program Files\\sonar-scanner\\bin\\sonar-scanner" -Dsonar.projectKey=BankingAPI -Dsonar.sources=src/main/java/ -Dsonar.host.url=http://localhost:9000 -Dsonar.login=your-token'
-                        }
+                    bat '"C:\\Program Files\\sonar-scanner\\bin\\sonar-scanner" -Dsonar.projectKey=BankingAPI -Dsonar.sources=src/main/java/ -Dsonar.host.url=http://localhost:9000 -Dsonar.token=your-new-token'
+                                                }
             }
         }
         stage('Security Scan') { steps { echo 'Performing security scan...' } }
